@@ -22,6 +22,6 @@
     </footer>
     
     <!-- JavaScript -->
-    <script src="/assets/js/app.js"></script>
+    <script src="<?= $baseUrl ?>/assets/js/app.js"></script>
 </body>
 </html>

@@ -1,3 +1,9 @@
+<?php
+// Detectar la URL base automáticamente
+$scriptDir = dirname($_SERVER['SCRIPT_NAME']);
+$baseUrl = rtrim($scriptDir, '/');
+if ($baseUrl === '' || $baseUrl === '.') $baseUrl = '';
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,23 +18,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Styles -->
-    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="<?= $baseUrl ?>/assets/css/styles.css">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+    <link rel="icon" type="image/png" href="<?= $baseUrl ?>/assets/img/favicon.png">
 </head>
 <body>
     <header class="header">
         <div class="container">
-            <a href="/" class="logo">
+            <a href="<?= $baseUrl ?>/" class="logo">
                 <span class="logo-icon">🐾</span>
                 <span class="logo-text">Almitas Peludas</span>
             </a>
             <nav class="nav">
-                <a href="/" class="nav-link">Inicio</a>
-                <a href="/agendar.php" class="nav-link">Agendar Turno</a>
-                <a href="/tienda.php" class="nav-link">Tienda</a>
-                <a href="/carrito.php" class="nav-link cart-link">
+                <a href="<?= $baseUrl ?>/" class="nav-link">Inicio</a>
+                <a href="<?= $baseUrl ?>/agendar.php" class="nav-link">Agendar Turno</a>
+                <a href="<?= $baseUrl ?>/tienda.php" class="nav-link">Tienda</a>
+                <a href="<?= $baseUrl ?>/carrito.php" class="nav-link cart-link">
                     🛒 <span id="cart-count">0</span>
                 </a>
             </nav>
@@ -40,3 +46,4 @@
         </div>
     </header>
     <main class="main">
+
