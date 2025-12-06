@@ -143,13 +143,20 @@ INSERT INTO usuarios (email, password, nombre, telefono, rol) VALUES
 INSERT INTO usuarios (email, password, nombre, telefono, direccion, barrio, rol) VALUES
 ('cliente@test.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Cliente Test', '0987654321', 'Av. Siempre Viva 742', 'Centro', 'cliente');
 
--- Servicios de peluquería
+-- Servicios de peluquería (Precios Argentina 2024)
 INSERT INTO peluqueria_servicios (nombre, descripcion, duracion_minutos, precio) VALUES
-('Baño y Secado', 'Baño completo con shampoo hipoalergénico y secado', 60, 2500.00),
-('Corte Completo', 'Corte de pelo según raza y preferencias', 90, 4500.00),
-('Baño + Corte', 'Servicio completo de baño y corte', 120, 6000.00),
-('Corte de Uñas', 'Corte y limado de uñas', 20, 800.00),
-('Limpieza de Oídos', 'Limpieza profunda de oídos', 15, 600.00);
+('Baño y Secado - Chico', 'Baño completo con shampoo hipoalergénico y secado (hasta 10kg)', 45, 15000.00),
+('Baño y Secado - Mediano', 'Baño completo con shampoo hipoalergénico y secado (10-20kg)', 60, 20000.00),
+('Baño y Secado - Grande', 'Baño completo con shampoo hipoalergénico y secado (+20kg)', 75, 28000.00),
+('Baño + Corte - Chico', 'Servicio completo de baño y corte (hasta 10kg)', 90, 30000.00),
+('Baño + Corte - Mediano', 'Servicio completo de baño y corte (10-20kg)', 120, 40000.00),
+('Baño + Corte - Grande', 'Servicio completo de baño y corte (+20kg)', 150, 50000.00),
+('Corte de Uñas', 'Corte y limado de uñas', 15, 3500.00),
+('Limpieza de Oídos', 'Limpieza profunda de oídos', 15, 4000.00),
+('Deslanado', 'Remoción de hasta 90% del pelo muerto con cepillo especial', 45, 12000.00),
+('Corte Higiénico', 'Recorte de zonas sanitarias y almohadillas', 20, 6000.00),
+('Baño Medicado', 'Baño con shampoo antiséptico o antipulgas', 60, 18000.00),
+('Limpieza Glándulas Anales', 'Limpieza de glándulas anales', 10, 5000.00);
 
 -- Productos de ejemplo
 INSERT INTO shop_productos (nombre, descripcion, precio_estimado, proveedor_ref, categoria) VALUES
