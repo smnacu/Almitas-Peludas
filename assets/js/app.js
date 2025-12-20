@@ -101,7 +101,7 @@ const Cart = {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: linear-gradient(135deg, #7c3aed, #f59e0b);
+            background: linear-gradient(135deg, #7FA968, #5D7E4C);
             color: white;
             padding: 1rem 1.5rem;
             border-radius: 10px;
@@ -169,8 +169,7 @@ function initTurnoForm() {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData);
 
-        // Agregar datos adicionales
-        data.cliente_id = 2; // TODO: Obtener de sesión
+        // data.cliente_id se toma de la sesión en backend
         data.direccion = data.direccion || 'Por confirmar';
 
         try {
@@ -186,6 +185,10 @@ function initTurnoForm() {
                 showAlert('¡Turno agendado exitosamente! Te contactaremos para confirmar.', 'success');
                 form.reset();
             } else {
+                if (response.status === 401) {
+                    window.location.href = '/login.php';
+                    return;
+                }
                 showAlert(result.message || 'Error al agendar turno', 'error');
             }
         } catch (error) {
@@ -220,7 +223,7 @@ async function checkout() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                cliente_id: 2, // TODO: Obtener de sesión
+                // cliente_id se toma de sesión
                 productos: productos
             })
         });
@@ -232,6 +235,10 @@ async function checkout() {
             showAlert('¡Pedido realizado! Te contactaremos para coordinar la entrega.', 'success');
             setTimeout(() => window.location.href = '/', 2000);
         } else {
+            if (response.status === 401) {
+                window.location.href = '/login.php';
+                return;
+            }
             showAlert(result.message || 'Error al procesar pedido', 'error');
         }
     } catch (error) {

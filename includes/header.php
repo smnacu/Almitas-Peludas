@@ -32,11 +32,19 @@ if ($baseUrl === '' || $baseUrl === '.') $baseUrl = '';
             </a>
             <nav class="nav">
                 <a href="<?= $baseUrl ?>/" class="nav-link">Inicio</a>
-                <a href="<?= $baseUrl ?>/agendar.php" class="nav-link">Agendar Turno</a>
+                <a href="<?= $baseUrl ?>/escuela.php" class="nav-link" style="color: var(--warning);">Escuela</a>
+                <a href="<?= $baseUrl ?>/agendar.php" class="nav-link">Agendar</a>
                 <a href="<?= $baseUrl ?>/tienda.php" class="nav-link">Tienda</a>
                 <a href="<?= $baseUrl ?>/carrito.php" class="nav-link cart-link">
                     🛒 <span id="cart-count">0</span>
                 </a>
+                <?php if (isCliente()): ?>
+                    <a href="<?= $baseUrl ?>/perfil_usuario.php" class="nav-link">Mi Cuenta</a>
+                    <a href="<?= $baseUrl ?>/perfil_almitas.php" class="nav-link">Mis Almitas</a>
+                    <a href="<?= $baseUrl ?>/logout.php" class="nav-link" style="color: var(--error);">Salir</a>
+                <?php else: ?>
+                    <a href="<?= $baseUrl ?>/login.php" class="nav-link" style="color: var(--success);">Ingresar</a>
+                <?php endif; ?>
             </nav>
             <button class="nav-toggle" aria-label="Menú">
                 <span></span>

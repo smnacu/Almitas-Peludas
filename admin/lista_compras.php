@@ -74,8 +74,9 @@ try {
             </a>
             <nav class="nav">
                 <a href="/admin/" class="nav-link">Dashboard</a>
-                <a href="/admin/lista_compras.php" class="nav-link">Lista de Compras</a>
-                <a href="/" class="nav-link" target="_blank">Ver Sitio</a>
+                <a href="/admin/turnos.php" class="nav-link">Turnos</a>
+                <a href="/admin/pedidos.php" class="nav-link">Pedidos</a>
+                <a href="/admin/lista_compras.php" class="nav-link" style="color: var(--primary);">Lista de Compras</a>
                 <a href="/admin/logout.php" class="nav-link" style="color: var(--error);">Salir</a>
             </nav>
         </div>

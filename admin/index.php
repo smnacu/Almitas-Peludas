@@ -65,8 +65,9 @@ try {
             </a>
             <nav class="nav">
                 <a href="/admin/" class="nav-link">Dashboard</a>
+                <a href="/admin/turnos.php" class="nav-link">Turnos</a>
+                <a href="/admin/pedidos.php" class="nav-link">Pedidos</a>
                 <a href="/admin/lista_compras.php" class="nav-link">Lista de Compras</a>
-                <a href="/" class="nav-link" target="_blank">Ver Sitio</a>
                 <a href="/admin/logout.php" class="nav-link" style="color: var(--error);">Salir</a>
             </nav>
         </div>
@@ -102,6 +103,15 @@ try {
                         <?php endif; ?>
                     </div>
                     
+                    <div class="card" style="text-align: center;">
+                        <div style="font-size: 3rem;">🔐</div>
+                        <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">Seguridad</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Protégete con 2FA</div>
+                        <a href="/admin/setup_2fa.php" class="btn btn-sm btn-secondary mt-2">
+                            Configurar
+                        </a>
+                    </div>
+
                     <div class="card" style="text-align: center;">
                         <div style="font-size: 3rem;">📦</div>
                         <div style="font-size: 2rem; font-weight: 700; color: var(--success);">

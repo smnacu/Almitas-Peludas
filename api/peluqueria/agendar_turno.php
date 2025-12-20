@@ -13,21 +13,26 @@
  * @package AlmitasPeludas
  */
 
-require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../includes/functions.php';
 
 // Configurar CORS
 setCorsHeaders();
 
-// Solo aceptar POST
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    jsonError('Método no permitido. Use POST.', 405);
+// Verificar autenticación
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isCliente()) {
+    jsonError('Debe iniciar sesión para agendar un turno.', 401);
 }
 
 // Obtener datos del request
 $data = getJsonInput();
+$clienteId = $_SESSION['user']['id'];
 
 // Validar campos requeridos
-$requiredFields = ['fecha', 'hora', 'barrio', 'servicio_id', 'cliente_id', 'direccion'];
+$requiredFields = ['fecha', 'hora', 'barrio', 'servicio_id', 'direccion'];
 foreach ($requiredFields as $field) {
     if (empty($data[$field])) {
         jsonError("El campo '$field' es requerido.", 400);
@@ -39,18 +44,13 @@ $fecha = $data['fecha'];
 $hora = $data['hora'];
 $barrio = trim($data['barrio']);
 $servicioId = (int) $data['servicio_id'];
-$clienteId = (int) $data['cliente_id'];
 $direccion = trim($data['direccion']);
 $notas = $data['notas'] ?? null;
 
 // ============================================
 // LÓGICA DE VALIDACIÓN DE ZONAS POR DÍA
 // ============================================
-$zonasPorDia = [
-    1 => 'Oeste',      // Lunes
-    3 => 'Centro',     // Miércoles
-    5 => 'Norte',      // Viernes
-];
+$zonasPorDia = getZonasPorDia();
 
 // Obtener el día de la semana (1=Lunes, 7=Domingo)
 $fechaObj = DateTime::createFromFormat('Y-m-d', $fecha);
@@ -62,7 +62,11 @@ $diaSemana = (int) $fechaObj->format('N'); // 1=Lunes, 2=Martes, etc.
 
 // Verificar si el día es válido para turnos
 if (!isset($zonasPorDia[$diaSemana])) {
-    $diasPermitidos = ['Lunes (Oeste)', 'Miércoles (Centro)', 'Viernes (Norte)'];
+    $diasPermitidos = [];
+    foreach ($zonasPorDia as $d) {
+        $diasPermitidos[] = "{$d['dia']} ({$d['zona']})";
+    }
+    
     jsonError(
         'Solo atendemos los días: ' . implode(', ', $diasPermitidos) . '. ' .
         'La fecha seleccionada no corresponde a un día de atención.',
@@ -71,7 +75,7 @@ if (!isset($zonasPorDia[$diaSemana])) {
 }
 
 // Verificar que el barrio coincida con el día
-$zonaEsperada = $zonasPorDia[$diaSemana];
+$zonaEsperada = $zonasPorDia[$diaSemana]['zona'];
 $barrioNormalizado = strtolower($barrio);
 $zonaEsperadaNormalizada = strtolower($zonaEsperada);
 

@@ -44,8 +44,12 @@ include __DIR__ . '/includes/header.php';
                 $icono = $iconos[$prod['categoria']] ?? '📦';
             ?>
             <div class="card product-card" data-category="<?= e($prod['categoria']) ?>">
-                <div class="product-image">
-                    <?= $icono ?>
+                <div class="product-image" style="height: 200px; display: flex; align-items: center; justify-content: center; background: var(--surface-alt); border-radius: 8px; overflow: hidden; margin-bottom: 1rem;">
+                    <?php if (!empty($prod['imagen_url'])): ?>
+                        <img src="<?= e($prod['imagen_url']) ?>" alt="<?= e($prod['nombre']) ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                    <?php else: ?>
+                        <div style="font-size: 3rem;"><?= $icono ?></div>
+                    <?php endif; ?>
                 </div>
                 <div class="product-info">
                     <span class="product-category"><?= e($prod['categoria']) ?></span>

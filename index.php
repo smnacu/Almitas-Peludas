@@ -4,7 +4,8 @@
  */
 require_once __DIR__ . '/includes/functions.php';
 
-$pageTitle = 'Peluquería Canina a Domicilio';
+$config = require __DIR__ . '/config/app.php';
+$pageTitle = 'Estética y Salud Animal a Domicilio';
 $servicios = getServicios();
 
 include __DIR__ . '/includes/header.php';
@@ -13,17 +14,11 @@ include __DIR__ . '/includes/header.php';
 <!-- Hero Section -->
 <section class="hero">
     <div class="container">
-        <h1 class="hero-title">
-            Tu mascota, <span class="highlight">hermosa</span><br>
-            en la comodidad de tu hogar 🐶
-        </h1>
-        <p class="hero-subtitle">
-            Servicio de peluquería canina a domicilio. Atendemos por zonas: 
-            Oeste (Lun) • Centro (Mié) • Norte (Vie)
-        </p>
-        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-            <a href="/agendar.php" class="btn btn-primary">📅 Agendar Turno</a>
-            <a href="/tienda.php" class="btn btn-secondary">🛒 Ver Tienda</a>
+        <h1 class="hero-title">Tu <span class="text-gradient">Compañero</span> merece lo mejor</h1>
+        <p class="hero-subtitle">Estética y salud animal en la comodidad de tu hogar. Tratamos a cada almita con el respeto y amor que es parte de tu familia.</p>
+        <div class="hero-buttons">
+            <a href="agendar.php" class="btn btn-primary">Reservar Turno</a>
+            <a href="tienda.php" class="btn btn-secondary">Tienda</a>
         </div>
     </div>
 </section>
@@ -92,7 +87,7 @@ include __DIR__ . '/includes/header.php';
         </div>
         
         <p class="text-center" style="color: var(--text-secondary);">
-            📱 ¿Tenés dudas sobre tu zona? <a href="https://wa.me/5491112345678" style="color: var(--primary-light);">Consultanos por WhatsApp</a>
+            📱 ¿Tenés dudas sobre tu zona? <a href="https://wa.me/<?= $config['whatsapp'] ?>" target="_blank" style="color: var(--primary-light);">Consultanos por WhatsApp</a>
         </p>
     </div>
 </section>

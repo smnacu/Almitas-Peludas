@@ -7,16 +7,19 @@
                     <span>Almitas Peludas</span>
                 </div>
                 <div class="footer-info">
-                    <p>Peluquería canina a domicilio</p>
+                    <p>Estética y Salud Animal a domicilio</p>
                     <p>📍 Atendemos: Oeste (Lun) | Centro (Mié) | Norte (Vie)</p>
                 </div>
                 <div class="footer-social">
-                    <a href="https://wa.me/5491112345678" target="_blank" class="social-link">📱 WhatsApp</a>
-                    <a href="https://instagram.com/almitaspeludas" target="_blank" class="social-link">📸 Instagram</a>
+                    <?php 
+                    $config = require __DIR__ . '/../config/app.php'; 
+                    ?>
+                    <a href="https://wa.me/<?= $config['whatsapp'] ?>" target="_blank" class="social-link">📱 WhatsApp</a>
+                    <a href="https://instagram.com/<?= $config['instagram'] ?>" target="_blank" class="social-link">📸 Instagram</a>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; <?= date('Y') ?> Almitas Peludas. Hecho con ❤️ para las mascotas.</p>
+                <p>&copy; <?= date('Y') ?> Almitas Peludas. Cuidando a tu familia multiespecie. ❤️</p>
             </div>
         </div>
     </footer>

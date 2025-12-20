@@ -83,11 +83,40 @@ function isAdmin(): bool {
 }
 
 /**
+ * Verifica si el usuario está logueado como cliente
+ */
+function isCliente(): bool {
+    return isset($_SESSION['user']);
+}
+
+/**
+ * Obtiene el usuario actual de la sesión
+ */
+function getCurrentUser(): ?array {
+    return $_SESSION['user'] ?? null;
+}
+
+/**
  * Requiere autenticación de admin
  */
 function requireAdmin(): void {
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     if (!isAdmin()) {
         redirect('/admin/login.php');
     }
 }
+
+/**
+ * Requiere autenticación de cliente (o admin)
+ */
+function requireLogin(): void {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (!isCliente()) {
+        redirect('/login.php');
+    }
+}
+

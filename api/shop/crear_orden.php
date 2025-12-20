@@ -11,7 +11,7 @@
  * @package AlmitasPeludas
  */
 
-require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../includes/functions.php';
 
 // Configurar CORS
 setCorsHeaders();
@@ -21,19 +21,23 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     jsonError('Método no permitido. Use POST.', 405);
 }
 
-// Obtener datos del request
-$data = getJsonInput();
-
-// Validar campos requeridos
-if (empty($data['cliente_id'])) {
-    jsonError("El campo 'cliente_id' es requerido.", 400);
+// Verificar autenticación
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
+if (!isCliente()) {
+    jsonError('Debe iniciar sesión para realizar un pedido.', 401);
+}
+
+// Obtener datos del request
+$data = getJsonInput();
+$clienteId = $_SESSION['user']['id'];
+
+// Validar campos requeridos
 if (empty($data['productos']) || !is_array($data['productos'])) {
     jsonError("El campo 'productos' es requerido y debe ser un array.", 400);
 }
-
-$clienteId = (int) $data['cliente_id'];
 $productos = $data['productos'];
 $notas = $data['notas'] ?? null;
 $direccionEntrega = $data['direccion_entrega'] ?? null;

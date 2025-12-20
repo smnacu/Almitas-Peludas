@@ -15,6 +15,7 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
+    $code2fa = $_POST['code_2fa'] ?? '';
     
     try {
         $db = Database::getConnection();
@@ -23,13 +24,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->fetch();
         
         if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['user'] = [
-                'id' => $user['id'],
-                'email' => $user['email'],
-                'nombre' => $user['nombre'],
-                'rol' => $user['rol']
-            ];
-            redirect('/admin/');
+            // Verificar si tiene 2FA activado
+            if (!empty($user['secret_2fa'])) {
+                require_once __DIR__ . '/../includes/GoogleAuthenticator.php';
+                $ga = new GoogleAuthenticator();
+                
+                if (empty($code2fa)) {
+                    // Pedir código 2FA
+                    $ask2fa = true;
+                } else {
+                    // Validar código
+                    if ($ga->verifyCode($user['secret_2fa'], $code2fa)) {
+                        $_SESSION['user'] = [
+                            'id' => $user['id'],
+                            'email' => $user['email'],
+                            'nombre' => $user['nombre'],
+                            'rol' => $user['rol']
+                        ];
+                        redirect('/admin/');
+                    } else {
+                        $error = 'Código de verificación incorrecto.';
+                        $ask2fa = true; 
+                    }
+                }
+            } else {
+                // Login normal sin 2FA
+                $_SESSION['user'] = [
+                    'id' => $user['id'],
+                    'email' => $user['email'],
+                    'nombre' => $user['nombre'],
+                    'rol' => $user['rol']
+                ];
+                redirect('/admin/');
+            }
         } else {
             $error = 'Email o contraseña incorrectos';
         }
@@ -60,20 +87,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
         
         <form method="POST">
-            <div class="form-group">
-                <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-control" required 
-                       placeholder="admin@almitaspeludas.com">
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Contraseña</label>
-                <input type="password" name="password" class="form-control" required>
-            </div>
-            
-            <button type="submit" class="btn btn-primary" style="width: 100%;">
-                Ingresar
-            </button>
+            <?php if (isset($ask2fa) && $ask2fa): ?>
+                <!-- 2FA Form -->
+                <input type="hidden" name="email" value="<?= e($email) ?>">
+                <input type="hidden" name="password" value="<?= e($password) ?>">
+                
+                <div class="text-center mb-3">
+                    <p>Ingresá el código de 6 dígitos de tu autenticador</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label text-center">Código 2FA</label>
+                    <input type="text" name="code_2fa" class="form-control" required autofocus autocomplete="off"
+                           style="text-align: center; letter-spacing: 5px; font-size: 1.2rem;">
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    Verificar
+                </button>
+                <div class="text-center mt-2">
+                     <a href="/admin/login.php" style="font-size: 0.9rem;">Cancelar</a>
+                </div>
+
+            <?php else: ?>
+                <!-- Normal Login Form -->
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" required 
+                           placeholder="admin@almitaspeludas.com"
+                           value="<?= isset($_POST['email']) ? e($_POST['email']) : '' ?>">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    Ingresar
+                </button>
+            <?php endif; ?>
         </form>
         
         <p class="text-center mt-3" style="color: var(--text-muted); font-size: 0.85rem;">
